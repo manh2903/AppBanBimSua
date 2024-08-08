@@ -2,4 +2,9 @@
     <string name="app_name">AppBanBimSua</string>
     <string name="login">ĐĂNG NHẬP</string>
     <string name="signup">ĐĂNG KÝ</string>
+    <string name="home">Trang chủ</string>
+    <string name="logout">Đăng xuất</string>
+
+    <string name="navigation_drawer_open">Open navigation</string>
+    <string name="navigation_drawer_close">Close navigation</string>
 </resources>

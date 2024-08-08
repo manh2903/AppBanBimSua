@@ -42,5 +42,10 @@ dependencies {
     implementation ("androidx.multidex:multidex:2.0.1")
     implementation ("com.squareup.okhttp3:logging-interceptor:4.10.0")
     implementation ("com.squareup.okhttp3:okhttp:4.10.0")
+    //bragde
+    implementation ("com.nex3z:notification-badge:1.0.4")
+    //glider
+    implementation ("com.github.bumptech.glide:glide:4.15.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.15.0")
 
 }
