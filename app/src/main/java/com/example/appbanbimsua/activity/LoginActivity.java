@@ -11,18 +11,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.appbanbimsua.R;
 import com.example.appbanbimsua.api.ApiService;
 import com.example.appbanbimsua.api.RetrofitClient;
-import com.example.appbanbimsua.request.LoginRequest;
-import com.example.appbanbimsua.respone.UserResponse;
+import com.example.appbanbimsua.enitities.request.LoginRequest;
+import com.example.appbanbimsua.enitities.respone.UserResponse;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.HashSet;

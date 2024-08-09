@@ -4,15 +4,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
@@ -21,16 +20,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.appbanbimsua.R;
 import com.example.appbanbimsua.adapter.SanPhamHomeAdapter;
+import com.example.appbanbimsua.api.ApiService;
+import com.example.appbanbimsua.api.RetrofitClient;
+import com.example.appbanbimsua.enitities.Product;
+import com.example.appbanbimsua.enitities.respone.ProductResponse;
+import com.example.appbanbimsua.utils.GridSpacingItemDecoration;
 import com.google.android.material.navigation.NavigationView;
-import com.nex3z.notificationbadge.NotificationBadge;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private Button btnLogout;
@@ -40,29 +47,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout mDrawerLayout;
     private Toolbar toolbar;
     private ProgressDialog progressDialog;
-    private RecyclerView rcv_sp;
+    private RecyclerView rcv_list_item;
     private SanPhamHomeAdapter sanPhamHomeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        // Khởi tạo UI
-//        btnLogout = findViewById(R.id.btn_logout);
-//        textHello = findViewById(R.id.text_hello);
-//
-//        // Thiết lập listener cho nút đăng xuất
-//        btnLogout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                handleLogout();
-//            }
-//        });
         initUI();
         setSupportActionBar(toolbar);
-
-
         mDrawerLayout = findViewById(R.id.main);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -71,33 +64,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
         ActionViewFlipper();
+        getProduct();
     }
 
     private void initUI(){
         toolbar = findViewById(R.id.toolbar);
         viewFlipper = findViewById(R.id.viewlipper);
         navigationView = findViewById(R.id.navigation_view);
+        rcv_list_item = findViewById(R.id.rcv_list_item);
         progressDialog = new ProgressDialog(this);
     }
 
     private void ActionViewFlipper() {
-        List<String> mangquangcao = new ArrayList<>();
-        mangquangcao.add("https://tse1.mm.bing.net/th?id=OIP.38JcFPSkPL30uwjX1dMqHwHaEK&pid=Api&P=0&h=220");
-        mangquangcao.add("https://tse4.mm.bing.net/th?id=OIP.T0n15BuVPixFBT8pOl3RSAHaFj&pid=Api&P=0&h=220");
-        mangquangcao.add("https://tse3.mm.bing.net/th?id=OIP.zD1DaZ6OaqLJyVABimNjQgHaFj&pid=Api&P=0&h=220");
+        List<Integer> mangquangcao = new ArrayList<>();
+        mangquangcao.add(R.drawable.img_slide_1);
+        mangquangcao.add(R.drawable.img_slide_2);
+        mangquangcao.add(R.drawable.img_slide_3);
+
         for (int i = 0; i < mangquangcao.size(); i++){
             ImageView imageView = new ImageView(getApplicationContext());
-            Glide.with(getApplicationContext()).load(mangquangcao.get(i)).into(imageView);
+            imageView.setImageResource(mangquangcao.get(i));
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             viewFlipper.addView(imageView);
         }
+
         viewFlipper.setFlipInterval(3000);
         viewFlipper.setAutoStart(true);
+
         Animation slide_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right);
         Animation slide_out = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_rigth);
+
         viewFlipper.setInAnimation(slide_in);
         viewFlipper.setOutAnimation(slide_out);
     }
+
 
 
     @Override
@@ -150,5 +150,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("isLoggedIn", isLoggedIn);
         editor.apply();
+    }
+    private void getProduct() {
+        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+        Call<ProductResponse> call = apiService.getProducts();
+        call.enqueue(new Callback<ProductResponse>() {
+            @Override
+            public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Product> productList = response.body().getProduct();
+                    displayProducts(productList);
+                } else {
+                    Toast.makeText(MainActivity.this, "Không thể lấy danh sách sản phẩm", Toast.LENGTH_SHORT).show();
+                    // Log chi tiết lỗi nếu cần
+                    Log.e("API_ERROR", "Response Error: " + response.errorBody());
+                }
+            }
+            @Override
+            public void onFailure(Call<ProductResponse> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("API_ERROR", "Error: " + t.getMessage());
+            }
+        });
+    }
+    private void displayProducts(List<Product> productList) {
+        sanPhamHomeAdapter = new SanPhamHomeAdapter(this, productList);
+        rcv_list_item.setAdapter(sanPhamHomeAdapter);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+        rcv_list_item.setLayoutManager(layoutManager);
+        int spacing = getResources().getDimensionPixelSize(R.dimen.spacing);
+        rcv_list_item.addItemDecoration(new GridSpacingItemDecoration(2, spacing, true));
     }
 }

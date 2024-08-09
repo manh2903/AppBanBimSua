@@ -11,18 +11,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.appbanbimsua.R;
 import com.example.appbanbimsua.api.ApiService;
 import com.example.appbanbimsua.api.RetrofitClient;
-import com.example.appbanbimsua.request.SignUpRequest;
-import com.example.appbanbimsua.respone.SignUpResponse;
-import com.example.appbanbimsua.respone.UserResponse;
+import com.example.appbanbimsua.enitities.request.SignUpRequest;
+import com.example.appbanbimsua.enitities.respone.SignUpResponse;
+import com.example.appbanbimsua.enitities.respone.UserResponse;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -34,7 +30,6 @@ import java.util.regex.Pattern;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class SignUpActivity extends AppCompatActivity {
     TextInputLayout txtPassLayout, txtCfPassLayout;

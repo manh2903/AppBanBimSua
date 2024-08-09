@@ -1,4 +1,4 @@
-package com.example.appbanbimsua.request;
+package com.example.appbanbimsua.enitities.request;
 
 import com.google.gson.annotations.SerializedName;
 

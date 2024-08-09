@@ -23,12 +23,12 @@
                 android:layout_height="150dp"/>
             <TextView
                 android:id="@+id/tv_ten_sp"
-                android:text="hello"
+                android:text="VANS VAULT STYLE 36 BLACK"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="50dp"/>
             <TextView
                 android:id="@+id/tv_gia_sp"
                 android:text="Giá: 2500000đ"

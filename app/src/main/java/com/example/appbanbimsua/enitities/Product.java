@@ -1,8 +1,10 @@
-package com.example.appbanbimsua.respone;
+package com.example.appbanbimsua.enitities;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
     @SerializedName("id")
     private String id;
     @SerializedName("name")
@@ -19,6 +21,9 @@ public class Product {
     private int totalSold;
     @SerializedName("promotionPrice")
     private double promotionPrice;
+
+    public Product() {
+    }
 
     public Product(String id, String name, String slug, double price, int views, String images, int totalSold, double promotionPrice) {
         this.id = id;
@@ -61,5 +66,18 @@ public class Product {
 
     public double getPromotionPrice() {
         return promotionPrice;
+    }
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", slug='" + slug + '\'' +
+                ", price=" + price +
+                ", views=" + views +
+                ", images='" + images + '\'' +
+                ", totalSold=" + totalSold +
+                ", promotionPrice=" + promotionPrice +
+                '}';
     }
 }
