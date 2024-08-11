@@ -6,9 +6,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,8 +30,9 @@ import com.example.appbanbimsua.adapter.SanPhamHomeAdapter;
 import com.example.appbanbimsua.api.ApiService;
 import com.example.appbanbimsua.api.RetrofitClient;
 import com.example.appbanbimsua.enitities.Product;
-import com.example.appbanbimsua.enitities.respone.ProductResponse;
+import com.example.appbanbimsua.enitities.response.ProductResponse;
 import com.example.appbanbimsua.utils.GridSpacingItemDecoration;
+import com.example.appbanbimsua.utils.Utils;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -40,8 +43,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
-    private Button btnLogout;
-    private TextView textHello;
     private ViewFlipper viewFlipper;
     private NavigationView navigationView;
     private DrawerLayout mDrawerLayout;
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ProgressDialog progressDialog;
     private RecyclerView rcv_list_item;
     private SanPhamHomeAdapter sanPhamHomeAdapter;
+    private ImageView imgsearch;
+    private FrameLayout framegiohang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
         ActionViewFlipper();
         getProduct();
+        initListen();
     }
 
     private void initUI(){
@@ -72,7 +76,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         viewFlipper = findViewById(R.id.viewlipper);
         navigationView = findViewById(R.id.navigation_view);
         rcv_list_item = findViewById(R.id.rcv_list_item);
+        imgsearch = findViewById(R.id.imgsearch);
+        framegiohang = findViewById(R.id.framegiohang);
         progressDialog = new ProgressDialog(this);
+    }
+    private void initListen(){
+        imgsearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+        framegiohang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CartActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void ActionViewFlipper() {
@@ -158,8 +180,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Product> productList = response.body().getProduct();
-                    displayProducts(productList);
+                    //List<Product> productList = response.body().getProduct();
+                    Utils.productList = response.body().getProduct();
+                    displayProducts(Utils.productList);
                 } else {
                     Toast.makeText(MainActivity.this, "Không thể lấy danh sách sản phẩm", Toast.LENGTH_SHORT).show();
                     // Log chi tiết lỗi nếu cần

@@ -17,8 +17,8 @@ import com.example.appbanbimsua.R;
 import com.example.appbanbimsua.api.ApiService;
 import com.example.appbanbimsua.api.RetrofitClient;
 import com.example.appbanbimsua.enitities.request.SignUpRequest;
-import com.example.appbanbimsua.enitities.respone.SignUpResponse;
-import com.example.appbanbimsua.enitities.respone.UserResponse;
+import com.example.appbanbimsua.enitities.response.SignUpResponse;
+import com.example.appbanbimsua.enitities.response.UserResponse;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 

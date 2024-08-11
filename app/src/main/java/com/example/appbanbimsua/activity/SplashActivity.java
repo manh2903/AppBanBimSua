@@ -8,6 +8,7 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.appbanbimsua.R;
+import com.example.appbanbimsua.utils.Utils;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -26,7 +27,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void nextActivity() {
-        if (isLoggedIn()) {
+        if (Utils.isLoggedIn(this)) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         } else {
@@ -36,8 +37,8 @@ public class SplashActivity extends AppCompatActivity {
         finish();
     }
 
-    private boolean isLoggedIn() {
-        SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
-        return sharedPreferences.getBoolean("isLoggedIn", false);
-    }
+//    private boolean isLoggedIn() {
+//        SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+//        return sharedPreferences.getBoolean("isLoggedIn", false);
+//    }
 }

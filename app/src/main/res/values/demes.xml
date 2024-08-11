@@ -1,4 +1,4 @@
 <resources>
     <!-- Các kích thước khác -->
-    <dimen name="spacing">10dp</dimen>
+    <dimen name="spacing">5dp</dimen>
 </resources>

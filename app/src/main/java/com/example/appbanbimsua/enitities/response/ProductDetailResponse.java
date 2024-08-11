@@ -1,6 +1,8 @@
-package com.example.appbanbimsua.enitities.respone;
+package com.example.appbanbimsua.enitities.response;
 
 import com.example.appbanbimsua.enitities.ProductDetail;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.Serializable;
 import java.util.List;
@@ -63,13 +65,8 @@ public class ProductDetailResponse implements Serializable {
 
     @Override
     public String toString() {
-        return "ProductDetailResponse{" +
-                "product=" + product +
-                ", sizeUs=" + sizeUs +
-                ", sizeVn=" + sizeVn +
-                ", sizeCm=" + sizeCm +
-                ", availableSizes=" + availableSizes +
-                ", canBuy=" + canBuy +
-                '}';
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return gson.toJson(this);
     }
+
 }

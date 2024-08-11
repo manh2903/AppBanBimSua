@@ -3,7 +3,6 @@ package com.example.appbanbimsua.adapter;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +20,7 @@ import com.example.appbanbimsua.activity.ProductDetailActivity;
 import com.example.appbanbimsua.api.ApiService;
 import com.example.appbanbimsua.api.RetrofitClient;
 import com.example.appbanbimsua.enitities.Product;
-import com.example.appbanbimsua.enitities.respone.ProductDetailResponse;
-import com.example.appbanbimsua.enitities.respone.ProductResponse;
+import com.example.appbanbimsua.enitities.response.ProductDetailResponse;
 import com.example.appbanbimsua.utils.Utils;
 
 import java.util.List;
@@ -65,7 +63,17 @@ public class SanPhamHomeAdapter extends RecyclerView.Adapter<SanPhamHomeAdapter.
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getProductDetail(product.getSlug(), product.getId());
+                    String productSlug = product.getSlug();
+                    String productId = product.getId();
+
+
+                   //    getProductDetail(productSlug, productId);
+
+                    Intent intent = new Intent(context, ProductDetailActivity.class);
+                    intent.putExtra("productSlug", productSlug);
+                    intent.putExtra("productId", productId);
+                    context.startActivity(intent);
+
                 }
             });
         }
@@ -89,35 +97,5 @@ public class SanPhamHomeAdapter extends RecyclerView.Adapter<SanPhamHomeAdapter.
             txtten = itemView.findViewById(R.id.tv_ten_sp);
             imghinhanh = itemView.findViewById(R.id.itemsp_image);
         }
-    }
-
-    public void getProductDetail(String tenSp, String id){
-        ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Loading...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-
-        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
-        Call<ProductDetailResponse> call = apiService.getProductDetails(tenSp, id);
-        call.enqueue(new Callback<ProductDetailResponse>() {
-            @Override
-            public void onResponse(Call<ProductDetailResponse> call, Response<ProductDetailResponse> response) {
-                progressDialog.dismiss();
-                if (response.isSuccessful() && response.body() != null) {
-                    ProductDetailResponse ProductDetailResponse = response.body();
-                    // Chuyển sang màn chi tiết sản phẩm nếu gọi API thành công
-                    Intent intent = new Intent(context, ProductDetailActivity.class);
-                    intent.putExtra("productResponse", ProductDetailResponse);
-                    context.startActivity(intent);
-                } else {
-                    Toast.makeText(context, "Failed to retrieve data", Toast.LENGTH_SHORT).show();
-                }
-            }
-            @Override
-            public void onFailure(Call<ProductDetailResponse> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(context, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }

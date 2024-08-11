@@ -18,8 +18,10 @@ import com.example.appbanbimsua.R;
 import com.example.appbanbimsua.api.ApiService;
 import com.example.appbanbimsua.api.RetrofitClient;
 import com.example.appbanbimsua.enitities.request.LoginRequest;
-import com.example.appbanbimsua.enitities.respone.UserResponse;
+import com.example.appbanbimsua.enitities.response.UserResponse;
+import com.example.appbanbimsua.utils.Utils;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -116,20 +118,28 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void saveLoginState(boolean isLoggedIn) {
-        SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(Utils.PREF_LOGIN, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("isLoggedIn", isLoggedIn);
+        editor.putBoolean(Utils.KEY_IS_LOGGED_IN, isLoggedIn);
         editor.apply();
     }
 
+//    private void saveUserInfo(UserResponse userResponse) {
+//        SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putInt("id", userResponse.getId());
+//        editor.putString("fullName", userResponse.getFullName());
+//        editor.putString("email", userResponse.getEmail());
+//        editor.putString("phone", userResponse.getPhone());
+//        editor.putStringSet("roles", new HashSet<>(userResponse.getRoles()));
+//        editor.apply();
+//    }
     private void saveUserInfo(UserResponse userResponse) {
-        SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(Utils.PREF_USER_INFO, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("id", userResponse.getId());
-        editor.putString("fullName", userResponse.getFullName());
-        editor.putString("email", userResponse.getEmail());
-        editor.putString("phone", userResponse.getPhone());
-        editor.putStringSet("roles", new HashSet<>(userResponse.getRoles()));
+        Gson gson = new Gson();
+        String userJson = gson.toJson(userResponse);
+        editor.putString(Utils.KEY_USER_INFO, userJson);
         editor.apply();
     }
 }

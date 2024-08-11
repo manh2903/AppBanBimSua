@@ -1,4 +1,4 @@
-package com.example.appbanbimsua.enitities.respone;
+package com.example.appbanbimsua.enitities.response;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
