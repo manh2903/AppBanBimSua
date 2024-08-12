@@ -43,7 +43,7 @@
         android:text="Không có sản phẩm trong giỏ hàng"
         android:textSize="18sp"
         android:textColor="@android:color/black"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
 
     <LinearLayout

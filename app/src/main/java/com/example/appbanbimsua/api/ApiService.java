@@ -50,6 +50,10 @@ public interface ApiService {
             @Query("userId") Long userId,
             @Query("productId") String productId
     );
+    @DELETE("/api/cart/removeCartItemsByUserId")
+    Call<CartResponse> removeCartItemsByUserId(
+            @Query("userId") Long userId
+    );
     @GET("/api/cart/getCartByUserId")
     Call<CartResponse> getCartByUserId(
             @Query("userId") Long userId

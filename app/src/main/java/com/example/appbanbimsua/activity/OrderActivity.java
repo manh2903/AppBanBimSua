@@ -1,7 +1,9 @@
 package com.example.appbanbimsua.activity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +27,7 @@ import com.example.appbanbimsua.api.RetrofitClient;
 import com.example.appbanbimsua.enitities.ProductCart;
 import com.example.appbanbimsua.enitities.ProductOrder;
 import com.example.appbanbimsua.enitities.request.OrderRequest;
+import com.example.appbanbimsua.enitities.response.CartResponse;
 import com.example.appbanbimsua.fragment.ReceiverInfoFragment;
 import com.example.appbanbimsua.utils.Utils;
 
@@ -47,6 +50,7 @@ public class OrderActivity extends AppCompatActivity implements ReceiverInfoFrag
     private EditText edt_note;
     private List<ProductOrder> products = new ArrayList<>();
     private long totalAmount = 0;
+    private ProgressDialog progressDialog ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +72,7 @@ public class OrderActivity extends AppCompatActivity implements ReceiverInfoFrag
         rcv_cart = findViewById(R.id.rcv_cart);
         txt_tongtien = findViewById(R.id.txt_tongtien);
         edt_note = findViewById(R.id.edt_note);
+        progressDialog = new ProgressDialog(this);
     }
     private void loadCart() {
         cartAdapter = new OrderAdapter(OrderActivity.this, Utils.productCart);
@@ -107,7 +112,7 @@ public class OrderActivity extends AppCompatActivity implements ReceiverInfoFrag
                     Toast.makeText(OrderActivity.this, "Vui lòng nhập thông tin nhận hàng", Toast.LENGTH_SHORT).show();
                 } else {
                     // Thực hiện đặt hàng
-                    createOrder();
+                    removeCartItemsByUserId((long) Utils.getUserInfo(OrderActivity.this).getId());
                 }
             }
         });
@@ -143,11 +148,7 @@ public class OrderActivity extends AppCompatActivity implements ReceiverInfoFrag
         loadReceiverInfo();
     }
     private void createOrder() {
-        ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loading...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-
+        showProgress();
         for (ProductCart productCart : Utils.productCart) {
             ProductOrder productOrder = new ProductOrder();
             productOrder.setProductId(productCart.getId());
@@ -167,13 +168,8 @@ public class OrderActivity extends AppCompatActivity implements ReceiverInfoFrag
             @Override
             public void onResponse(Call<List<Integer>> call, Response<List<Integer>> response) {
                 progressDialog.dismiss();
-                if (response.isSuccessful() && response.body() != null) {
-                    List<Integer> orderIds = response.body();
-                } else {
-
-                }
+                showSuccessDialog();
             }
-
             @Override
             public void onFailure(Call<List<Integer>> call, Throwable t) {
                 progressDialog.dismiss();
@@ -181,4 +177,40 @@ public class OrderActivity extends AppCompatActivity implements ReceiverInfoFrag
             }
         });
     }
+    private void removeCartItemsByUserId(Long userId) {
+        showProgress();
+        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+        Call<CartResponse> call = apiService.removeCartItemsByUserId(userId);
+        call.enqueue(new Callback<CartResponse>() {
+            @Override
+            public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
+                progressDialog.dismiss();
+                createOrder();
+            }
+
+            @Override
+            public void onFailure(Call<CartResponse> call, Throwable t) {
+                progressDialog.dismiss();
+            }
+        });
+    }
+    private void showSuccessDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Thành công")
+                .setMessage("Đặt hàng thành công")
+                .setPositiveButton("OK", (dialog, which) -> {
+                    dialog.dismiss();
+                    finish();
+                    Intent intent = new Intent(OrderActivity.this, MainActivity.class);
+                    startActivity(intent);
+                })
+                .show();
+    }
+
+    private void showProgress(){
+        progressDialog.setMessage("Loading...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+    }
+
 }
