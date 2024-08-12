@@ -36,33 +36,30 @@ public class WaitingPickupFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_waiting_pickup, container, false);
         initUI();
-        createOrder();
+        fetchOrders();
         return view;
     }
 
     private void initUI() {
-        recyclerView = view.findViewById(R.id.recyclerViewWaitingPickup); // Thay đổi ở đây
+        recyclerView = view.findViewById(R.id.recyclerViewWaitingPickup);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         progressDialog = new ProgressDialog(getContext());
     }
 
-    private void createOrder() {
+    private void fetchOrders() {
         showProgress();
-        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
-        Call<List<OrderList>> call = apiService.getOrders((long) Utils.getUserInfo(getContext()).getId(), 1);
-        call.enqueue(new Callback<List<OrderList>>() {
+        Utils.fetchOrders(getContext(), Utils.getUserInfo(getContext()).getId(), 1, new Utils.OrderCallback() {
             @Override
-            public void onResponse(Call<List<OrderList>> call, Response<List<OrderList>> response) {
+            public void onSuccess(List<OrderList> orders) {
                 progressDialog.dismiss();
-                if (response.isSuccessful() && response.body() != null) {
-                    List<OrderList> orders = response.body();
+                if (orders != null) {
                     orderAdapter = new ListOrderAdapter(orders);
                     recyclerView.setAdapter(orderAdapter);
                 }
             }
 
             @Override
-            public void onFailure(Call<List<OrderList>> call, Throwable t) {
+            public void onError(Throwable throwable) {
                 progressDialog.dismiss();
                 // Xử lý lỗi
             }

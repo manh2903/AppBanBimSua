@@ -3,12 +3,19 @@ package com.example.appbanbimsua.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.appbanbimsua.api.ApiService;
+import com.example.appbanbimsua.api.RetrofitClient;
 import com.example.appbanbimsua.enitities.Product;
 import com.example.appbanbimsua.enitities.ProductCart;
+import com.example.appbanbimsua.enitities.response.OrderList;
 import com.example.appbanbimsua.enitities.response.UserResponse;
 import com.google.gson.Gson;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Utils {
     public static final String BASE_URL = "http://192.168.0.113:9999";
@@ -41,6 +48,31 @@ public class Utils {
         }
         SharedPreferences prefs = context.getSharedPreferences(PREF_USER_INFO, Context.MODE_PRIVATE);
         return prefs.getInt(KEY_USER_ID, -1);
+    }
+    public static void fetchOrders(Context context, long userId, int status, final OrderCallback callback) {
+        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+        Call<List<OrderList>> call = apiService.getOrders(userId, status);
+        call.enqueue(new Callback<List<OrderList>>() {
+            @Override
+            public void onResponse(Call<List<OrderList>> call, Response<List<OrderList>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onError(new Exception("Response not successful"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<OrderList>> call, Throwable t) {
+                callback.onError(t);
+            }
+        });
+    }
+
+
+    public interface OrderCallback {
+        void onSuccess(List<OrderList> orders);
+        void onError(Throwable throwable);
     }
 
 }
