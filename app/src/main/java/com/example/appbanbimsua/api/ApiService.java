@@ -1,6 +1,7 @@
 package com.example.appbanbimsua.api;// ApiService.java
 import com.example.appbanbimsua.enitities.request.CommentRequest;
 import com.example.appbanbimsua.enitities.request.LoginRequest;
+import com.example.appbanbimsua.enitities.request.OrderRequest;
 import com.example.appbanbimsua.enitities.request.SignUpRequest;
 import com.example.appbanbimsua.enitities.response.CartResponse;
 import com.example.appbanbimsua.enitities.response.ProductDetailResponse;
@@ -9,8 +10,11 @@ import com.example.appbanbimsua.enitities.response.ResponseOK;
 import com.example.appbanbimsua.enitities.response.SignUpResponse;
 import com.example.appbanbimsua.enitities.response.UserResponse;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -41,8 +45,15 @@ public interface ApiService {
             @Query("userId") Long userId,
             @Query("productId") String productId
     );
+    @DELETE("/api/cart/remove")
+    Call<CartResponse> removeCartItem(
+            @Query("userId") Long userId,
+            @Query("productId") String productId
+    );
     @GET("/api/cart/getCartByUserId")
     Call<CartResponse> getCartByUserId(
             @Query("userId") Long userId
     );
+    @POST("/api/orders/v2")
+    Call<List<Integer>> createOrder(@Body OrderRequest orderRequest);
 }

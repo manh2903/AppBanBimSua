@@ -41,6 +41,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         this.context = context;
         this.productList = productList;
     }
+    public List<ProductCart> getProductList() {
+        return productList;
+    }
 
     @NonNull
     @Override
@@ -155,5 +158,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 progressDialog.dismiss();
             }
         });
+    }
+    public void removeItem(int position) {
+        if (position >= 0 && position < productList.size()) {
+            productList.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, productList.size());
+        }
     }
 }
