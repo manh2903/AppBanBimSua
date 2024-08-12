@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
         ActionViewFlipper();
         getProduct();
@@ -130,8 +131,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
             finish();
         } else if (id == R.id.nav_logo_out) {
-
             handleLogout();
+        } else if (id == R.id.nav_order){
+            Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
+            startActivity(intent);
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
