@@ -36,10 +36,15 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     private Context context;
     private List<ProductCart> productList;
     public String total;
-
+    public Context getContext() {
+        return context;
+    }
     public CartAdapter(Context context, List<ProductCart> productList) {
         this.context = context;
         this.productList = productList;
+    }
+    public List<ProductCart> getProductList() {
+        return productList;
     }
 
     @NonNull
@@ -155,5 +160,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 progressDialog.dismiss();
             }
         });
+    }
+    public void removeItem(int position) {
+        if (position >= 0 && position < productList.size()) {
+            productList.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, productList.size());
+        }
     }
 }

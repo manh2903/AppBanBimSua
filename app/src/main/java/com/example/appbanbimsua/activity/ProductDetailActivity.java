@@ -8,6 +8,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,6 +56,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private String productId;
     private UserResponse userResponse = new UserResponse();
     private ImageView imgsearch;
+    private FrameLayout framegiohang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +102,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         etUserComment = findViewById(R.id.et_user_comment);
         btnSubmitComment = findViewById(R.id.btn_submit_comment);
         imgsearch = findViewById(R.id.imgsearch);
+        framegiohang = findViewById(R.id.framegiohang);
     }
 
     private void populateData() {
@@ -160,6 +163,13 @@ public class ProductDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ProductDetailActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+        framegiohang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProductDetailActivity.this, CartActivity.class);
                 startActivity(intent);
             }
         });
