@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_logo_out) {
             handleLogout();
         } else if (id == R.id.nav_order){
-            Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
+            Intent intent = new Intent(getApplicationContext(), ListOrderActivity.class);
             startActivity(intent);
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);

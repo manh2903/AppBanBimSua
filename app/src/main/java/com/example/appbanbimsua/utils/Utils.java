@@ -11,7 +11,7 @@ import com.google.gson.Gson;
 import java.util.List;
 
 public class Utils {
-    public static final String BASE_URL = "http://192.168.1.33:9999";
+    public static final String BASE_URL = "http://192.168.0.113:9999";
     public static final String PREF_USER_INFO = "UserInfo";
     public static final String KEY_USER_INFO = "userInfo";
     public static final String KEY_USER_ID = "id";

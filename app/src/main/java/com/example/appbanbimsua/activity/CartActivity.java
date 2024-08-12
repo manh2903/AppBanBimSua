@@ -156,9 +156,9 @@ public class CartActivity extends AppCompatActivity {
         call.enqueue(new Callback<CartResponse>() {
             @Override
             public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
-                    progressDialog.dismiss();
-                    getCartByUserId(userId);
-                    Toast.makeText(CartActivity.this, "Sản phẩm đã được xóa khỏi giỏ hàng", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+                getCartByUserId(userId);
+                Toast.makeText(CartActivity.this, "Sản phẩm đã được xóa khỏi giỏ hàng", Toast.LENGTH_SHORT).show();
             }
 
             @Override
