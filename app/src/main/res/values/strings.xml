@@ -5,6 +5,7 @@
     <string name="home">Trang chủ</string>
     <string name="logout">Đăng xuất</string>
     <string name="order">Đơn hàng</string>
+    <string name="person">Người dùng</string>
     <string name="thuonghieu">Thương hiệu:</string>
     <string name="quantity">Số lượng còn:</string>
     <string name="price">Giá:</string>
