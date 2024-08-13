@@ -4,6 +4,7 @@ import com.example.appbanbimsua.enitities.request.LoginRequest;
 import com.example.appbanbimsua.enitities.request.OrderRequest;
 import com.example.appbanbimsua.enitities.request.SignUpRequest;
 import com.example.appbanbimsua.enitities.response.CartResponse;
+import com.example.appbanbimsua.enitities.response.OrderDetailResponse;
 import com.example.appbanbimsua.enitities.response.OrderList;
 import com.example.appbanbimsua.enitities.response.ProductDetailResponse;
 import com.example.appbanbimsua.enitities.response.ProductResponse;
@@ -65,5 +66,9 @@ public interface ApiService {
     Call<List<OrderList>> getOrders(
             @Query("buyer") long buyer,
             @Query("status") int status
+    );
+    @GET("api/orders/detail")
+    Call<List<OrderDetailResponse>> getOrderDetail(
+            @Query("billCode") String billCode
     );
 }

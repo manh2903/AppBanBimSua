@@ -15,18 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appbanbimsua.R;
 import com.example.appbanbimsua.adapter.ListOrderAdapter;
-import com.example.appbanbimsua.api.ApiService;
-import com.example.appbanbimsua.api.RetrofitClient;
 import com.example.appbanbimsua.enitities.response.OrderList;
 import com.example.appbanbimsua.utils.Utils;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class WaitingPickupFragment extends Fragment {
+public class ReturnedFragment extends Fragment {
     private ProgressDialog progressDialog;
     private RecyclerView recyclerView;
     private ListOrderAdapter orderAdapter;
@@ -51,16 +45,13 @@ public class WaitingPickupFragment extends Fragment {
 
     private void fetchOrders() {
         showProgress();
-        Utils.fetchOrders(getContext(), Utils.getUserInfo(getContext()).getId(), 1, new Utils.OrderCallback() {
+        Utils.fetchOrders(getContext(), Utils.getUserInfo(getContext()).getId(), 4, new Utils.OrderCallback() {
             @Override
             public void onSuccess(List<OrderList> orders) {
                 progressDialog.dismiss();
                 if (orders != null) {
-                    orderAdapter = new ListOrderAdapter(getContext(),orders,WaitingPickupFragment.this);
+                    orderAdapter = new ListOrderAdapter(getContext(),orders, ReturnedFragment.this);
                     recyclerView.setAdapter(orderAdapter);
-                } else {
-                    recyclerView.setVisibility(View.GONE);
-                    tv_empty_cart.setVisibility(View.VISIBLE);
                 }
             }
 

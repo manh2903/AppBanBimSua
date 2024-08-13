@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +26,7 @@ public class InDeliveryFragment extends Fragment {
     private RecyclerView recyclerView;
     private ListOrderAdapter orderAdapter;
     private View view;
+    private TextView tv_empty_cart;
 
     @Nullable
     @Override
@@ -37,6 +39,7 @@ public class InDeliveryFragment extends Fragment {
 
     private void initUI() {
         recyclerView = view.findViewById(R.id.recyclerViewWaitingPickup);
+        tv_empty_cart = view.findViewById(R.id.tv_empty_cart);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         progressDialog = new ProgressDialog(getContext());
     }
@@ -48,7 +51,7 @@ public class InDeliveryFragment extends Fragment {
             public void onSuccess(List<OrderList> orders) {
                 progressDialog.dismiss();
                 if (orders != null) {
-                    orderAdapter = new ListOrderAdapter(orders);
+                    orderAdapter = new ListOrderAdapter(getContext(),orders,InDeliveryFragment.this);
                     recyclerView.setAdapter(orderAdapter);
                 }
             }

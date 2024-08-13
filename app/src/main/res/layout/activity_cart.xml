@@ -8,7 +8,6 @@
     android:orientation="vertical"
     tools:context=".activity.CartActivity">
 
-    <!-- AppBar with Toolbar -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,8 +18,31 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/pink"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:title="Giỏ hàng">
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/img_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_gravity="center_vertical"
+                    android:paddingEnd="15dp"
+                    android:src="@drawable/baseline_arrow_back_ios_24"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="Giỏ hàng"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:textSize="25sp"/>
+            </LinearLayout>
+
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -78,6 +100,7 @@
             android:layout_marginEnd="20dp"
             android:background="@drawable/btn_add_cart"
             android:gravity="center"
+            android:visibility="gone"
             android:text="  Đặt hàng  " />
 
         <Button
@@ -87,6 +110,7 @@
             android:layout_marginEnd="20dp"
             android:background="@drawable/btn_add_cart"
             android:gravity="center"
+            android:visibility="gone"
             android:text="  Đóng  " />
     </LinearLayout>
 </LinearLayout>

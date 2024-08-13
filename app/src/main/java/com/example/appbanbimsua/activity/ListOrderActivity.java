@@ -1,6 +1,8 @@
 package com.example.appbanbimsua.activity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,11 +14,12 @@ import com.example.appbanbimsua.R;
 import com.example.appbanbimsua.fragment.CanceledFragment;
 import com.example.appbanbimsua.fragment.DeliveredFragment;
 import com.example.appbanbimsua.fragment.InDeliveryFragment;
+import com.example.appbanbimsua.fragment.ReturnedFragment;
 import com.example.appbanbimsua.fragment.WaitingPickupFragment;
 import com.google.android.material.tabs.TabLayout;
 
 public class ListOrderActivity extends AppCompatActivity {
-
+    private ImageView img_back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +27,7 @@ public class ListOrderActivity extends AppCompatActivity {
 
         // Thiết lập TabLayout và ViewPager
         TabLayout tabLayout = findViewById(R.id.tabLayout);
+        img_back = findViewById(R.id.img_back);
         ViewPager viewPager = findViewById(R.id.viewPager);
 
         // Thiết lập ViewPager Adapter
@@ -42,6 +46,8 @@ public class ListOrderActivity extends AppCompatActivity {
                         return new DeliveredFragment();
                     case 3:
                         return new CanceledFragment();
+                    case 4:
+                        return new ReturnedFragment();
                     default:
                         return new WaitingPickupFragment();
                 }
@@ -49,7 +55,7 @@ public class ListOrderActivity extends AppCompatActivity {
 
             @Override
             public int getCount() {
-                return 4;
+                return 5;
             }
 
             @Override
@@ -63,6 +69,8 @@ public class ListOrderActivity extends AppCompatActivity {
                         return "Đã giao hàng";
                     case 3:
                         return "Đơn hàng đã hủy";
+                    case 4:
+                        return "Đơn hàng đã trả";
                 }
                 return null;
             }
@@ -70,5 +78,11 @@ public class ListOrderActivity extends AppCompatActivity {
 
         // Liên kết TabLayout với ViewPager
         tabLayout.setupWithViewPager(viewPager);
+        img_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 }

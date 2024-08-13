@@ -5,64 +5,77 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.appbanbimsua.R;
 import com.example.appbanbimsua.activity.OrderDetailActivity;
+import com.example.appbanbimsua.activity.ProductDetailActivity;
+import com.example.appbanbimsua.enitities.ProductCart;
 import com.example.appbanbimsua.enitities.response.OrderList;
 import com.example.appbanbimsua.fragment.CanceledFragment;
 import com.example.appbanbimsua.fragment.DeliveredFragment;
 import com.example.appbanbimsua.fragment.InDeliveryFragment;
 import com.example.appbanbimsua.fragment.WaitingPickupFragment;
+import com.example.appbanbimsua.utils.Utils;
 
 import java.util.List;
 
-public class ListOrderAdapter extends RecyclerView.Adapter<ListOrderAdapter.OrderListViewHolder> {
+public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.OrderDetailViewHolder> {
     private Context context;
-    private Fragment fragment;
-    private List<OrderList> orders;
-
-    public ListOrderAdapter(Context context, List<OrderList> orders, Fragment fragment) {
-        this.context = context;
-        this.orders = orders;
-        this.fragment = fragment;
+    private List<ProductCart> productList;
+    public Context getContext() {
+        return context;
+    }
+    public List<ProductCart> getProductList() {
+        return productList;
     }
 
-
+    public OrderDetailAdapter(Context context, List<ProductCart> productList) {
+        this.context = context;
+        this.productList = productList;
+    }
     @NonNull
     @Override
-    public OrderListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public OrderDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_order, parent, false);
-        return new OrderListViewHolder(view);
+                .inflate(R.layout.item_order_detail, parent, false);
+        return new OrderDetailViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OrderListViewHolder holder, int position) {
-        OrderList order = orders.get(position);
-        holder.billCodeTextView.setText("Mã đơn hàng: "+order.getBillCode());
-        holder.quantityTextView.setText("Số lượng: "+String.valueOf(order.getQuantity()));
-        holder.totalPriceTextView.setText(String.format("Tổng tiền: %,d đ", order.getTotalPrice()));
+    public void onBindViewHolder(@NonNull OrderDetailViewHolder holder, int position) {
+        ProductCart product = productList.get(position);
+        holder.tvProductName.setText(product.getName());
+        holder.tvProductPrice.setText(String.format("%,d đ", product.getPrice()));
+        holder.tvQuantity.setText(String.valueOf(product.getQuantity()));
+        String img = Utils.BASE_URL + product.getImages().get(0);
+
+        Glide.with(holder.itemView.getContext())
+                .load(img)
+                .error(R.drawable.ic_home)
+                .override(holder.imgProduct.getWidth(), holder.imgProduct.getHeight())
+                .centerCrop()
+                .into(holder.imgProduct);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, OrderDetailActivity.class);
-                // Truyền giá trị key
-                if (fragment instanceof WaitingPickupFragment) {
-                    intent.putExtra("key", 1);
-                } else if (fragment instanceof InDeliveryFragment){
-                    intent.putExtra("key", 2);
-                }else if (fragment instanceof DeliveredFragment) {
-                    intent.putExtra("key", 3);
-                } else if (fragment instanceof CanceledFragment) {
-                    intent.putExtra("key", 5);
-                }
-                intent.putExtra("billCode", order.getBillCode());
+                String productSlug = product.getSlug();
+                String productId = product.getId();
+
+
+                //    getProductDetail(productSlug, productId);
+
+                Intent intent = new Intent(context, ProductDetailActivity.class);
+                intent.putExtra("productSlug", productSlug);
+                intent.putExtra("productId", productId);
                 context.startActivity(intent);
             }
         });
@@ -70,19 +83,19 @@ public class ListOrderAdapter extends RecyclerView.Adapter<ListOrderAdapter.Orde
 
     @Override
     public int getItemCount() {
-        return orders.size();
+        return productList.size();
     }
 
-    public static class OrderListViewHolder extends RecyclerView.ViewHolder {
-        TextView billCodeTextView;
-        TextView quantityTextView;
-        TextView totalPriceTextView;
+    public static class OrderDetailViewHolder extends RecyclerView.ViewHolder {
+        ImageView imgProduct;
+        TextView tvProductName, tvProductPrice, tvQuantity;
 
-        public OrderListViewHolder(@NonNull View itemView) {
+        public OrderDetailViewHolder(@NonNull View itemView) {
             super(itemView);
-            billCodeTextView = itemView.findViewById(R.id.tv_bill_name);
-            quantityTextView = itemView.findViewById(R.id.tv_quantity);
-            totalPriceTextView = itemView.findViewById(R.id.tv_tong_tien);
+            imgProduct = itemView.findViewById(R.id.img_product);
+            tvProductName = itemView.findViewById(R.id.tv_product_name);
+            tvProductPrice = itemView.findViewById(R.id.tv_product_price);
+            tvQuantity = itemView.findViewById(R.id.tv_quantity);
         }
     }
 }

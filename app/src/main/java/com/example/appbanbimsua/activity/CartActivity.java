@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ public class CartActivity extends AppCompatActivity {
 
     private RecyclerView rcvCart;
     private CartAdapter cartAdapter;
+    private ImageView img_back;
     private TextView txtTongTien, tvEmptyCart;
     private Button btnAddToCart, btnClose;
     private final BroadcastReceiver cartUpdateReceiver = new BroadcastReceiver() {
@@ -72,6 +74,7 @@ public class CartActivity extends AppCompatActivity {
         tvEmptyCart = findViewById(R.id.tv_empty_cart);
         btnAddToCart = findViewById(R.id.add_to_cart_button);
         btnClose = findViewById(R.id.btn_close);
+        img_back = findViewById(R.id.img_back);
     }
 
     private void setupRecyclerView() {
@@ -100,6 +103,7 @@ public class CartActivity extends AppCompatActivity {
         });
 
         btnClose.setOnClickListener(v -> onBackPressed());
+        img_back.setOnClickListener(v -> onBackPressed());
     }
 
     private void getCartByUserId(Long userId) {

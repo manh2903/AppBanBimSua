@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +52,7 @@ public class OrderActivity extends AppCompatActivity implements ReceiverInfoFrag
     private List<ProductOrder> products = new ArrayList<>();
     private long totalAmount = 0;
     private ProgressDialog progressDialog ;
+    private ImageView img_back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +74,7 @@ public class OrderActivity extends AppCompatActivity implements ReceiverInfoFrag
         rcv_cart = findViewById(R.id.rcv_cart);
         txt_tongtien = findViewById(R.id.txt_tongtien);
         edt_note = findViewById(R.id.edt_note);
+        img_back = findViewById(R.id.img_back);
         progressDialog = new ProgressDialog(this);
     }
     private void loadCart() {
@@ -93,6 +96,12 @@ public class OrderActivity extends AppCompatActivity implements ReceiverInfoFrag
             }
         });
         btn_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        img_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();

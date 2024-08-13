@@ -11,7 +11,7 @@
             android:title="@string/order" />
         <item
             android:id="@+id/nav_person"
-            android:icon="@drawable/ic_person"
+            android:icon="@drawable/baseline_person_24"
             android:title="@string/person" />
         <item
             android:id="@+id/nav_logo_out"

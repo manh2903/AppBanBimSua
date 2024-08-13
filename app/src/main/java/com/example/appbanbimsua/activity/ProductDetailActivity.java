@@ -57,6 +57,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private UserResponse userResponse = new UserResponse();
     private ImageView imgsearch;
     private FrameLayout framegiohang;
+    private ImageView img_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +104,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         btnSubmitComment = findViewById(R.id.btn_submit_comment);
         imgsearch = findViewById(R.id.imgsearch);
         framegiohang = findViewById(R.id.framegiohang);
+        img_back = findViewById(R.id.img_back);
     }
 
     private void populateData() {
@@ -171,6 +173,12 @@ public class ProductDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ProductDetailActivity.this, CartActivity.class);
                 startActivity(intent);
+            }
+        });
+        img_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }
