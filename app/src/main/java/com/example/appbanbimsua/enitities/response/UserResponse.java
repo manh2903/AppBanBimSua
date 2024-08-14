@@ -1,6 +1,7 @@
 package com.example.appbanbimsua.enitities.response;
 
 import com.google.gson.annotations.SerializedName;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserResponse {
@@ -25,7 +26,7 @@ public class UserResponse {
     @SerializedName("roles")
     private List<String> roles;
 
-    // Getters and setters
+    // Getters and setters with null checks
     public int getId() {
         return id;
     }
@@ -35,7 +36,7 @@ public class UserResponse {
     }
 
     public String getFullName() {
-        return fullName;
+        return fullName != null ? fullName : "";
     }
 
     public void setFullName(String fullName) {
@@ -43,7 +44,7 @@ public class UserResponse {
     }
 
     public String getEmail() {
-        return email;
+        return email != null ? email : "";
     }
 
     public void setEmail(String email) {
@@ -51,7 +52,7 @@ public class UserResponse {
     }
 
     public String getAddress() {
-        return address;
+        return address != null ? address : "";
     }
 
     public void setAddress(String address) {
@@ -59,7 +60,7 @@ public class UserResponse {
     }
 
     public String getPhone() {
-        return phone;
+        return phone != null ? phone : "";
     }
 
     public void setPhone(String phone) {
@@ -67,7 +68,7 @@ public class UserResponse {
     }
 
     public String getAvatar() {
-        return avatar;
+        return avatar != null ? avatar : "";
     }
 
     public void setAvatar(String avatar) {
@@ -75,7 +76,7 @@ public class UserResponse {
     }
 
     public List<String> getRoles() {
-        return roles;
+        return roles != null ? roles : new ArrayList<>();
     }
 
     public void setRoles(List<String> roles) {
@@ -86,12 +87,12 @@ public class UserResponse {
     public String toString() {
         return "{" +
                 "\"id\":" + id + "," +
-                "\"fullName\":\"" + fullName + "\"," +
-                "\"email\":\"" + email + "\"," +
-                "\"address\":\"" + address + "\"," +
-                "\"phone\":\"" + phone + "\"," +
-                "\"avatar\":\"" + avatar + "\"," +
-                "\"roles\":" + roles +
+                "\"fullName\":\"" + getFullName() + "\"," +
+                "\"email\":\"" + getEmail() + "\"," +
+                "\"address\":\"" + getAddress() + "\"," +
+                "\"phone\":\"" + getPhone() + "\"," +
+                "\"avatar\":\"" + getAvatar() + "\"," +
+                "\"roles\":" + getRoles() +
                 "}";
     }
 }

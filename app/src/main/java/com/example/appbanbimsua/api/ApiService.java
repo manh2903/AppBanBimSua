@@ -3,6 +3,7 @@ import com.example.appbanbimsua.enitities.request.CommentRequest;
 import com.example.appbanbimsua.enitities.request.LoginRequest;
 import com.example.appbanbimsua.enitities.request.OrderRequest;
 import com.example.appbanbimsua.enitities.request.SignUpRequest;
+import com.example.appbanbimsua.enitities.request.UpdateProfileRequest;
 import com.example.appbanbimsua.enitities.response.CartResponse;
 import com.example.appbanbimsua.enitities.response.OrderDetailResponse;
 import com.example.appbanbimsua.enitities.response.OrderList;
@@ -70,5 +71,10 @@ public interface ApiService {
     @GET("api/orders/detail")
     Call<List<OrderDetailResponse>> getOrderDetail(
             @Query("billCode") String billCode
+    );
+    @PUT("/api/update-profile/{userId}")
+    Call<ResponseOK> updateProfile(
+            @Path("userId") Long userId,
+            @Body UpdateProfileRequest profileReq
     );
 }
