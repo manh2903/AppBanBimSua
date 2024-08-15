@@ -1,4 +1,5 @@
 package com.example.appbanbimsua.api;// ApiService.java
+import com.example.appbanbimsua.enitities.request.ChangePasswordRequest;
 import com.example.appbanbimsua.enitities.request.CommentRequest;
 import com.example.appbanbimsua.enitities.request.LoginRequest;
 import com.example.appbanbimsua.enitities.request.OrderRequest;
@@ -76,5 +77,10 @@ public interface ApiService {
     Call<ResponseOK> updateProfile(
             @Path("userId") Long userId,
             @Body UpdateProfileRequest profileReq
+    );
+    @POST("/api/change-password/{userId}")
+    Call<ResponseOK> changePassword(
+            @Path("userId") Long userId,
+            @Body ChangePasswordRequest passwordReq
     );
 }

@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_contact){
             Intent intent = new Intent(getApplicationContext(), ContactActivity.class);
             startActivity(intent);
-    }
+        }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
