@@ -135,9 +135,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_order){
             Intent intent = new Intent(getApplicationContext(), ListOrderActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_person){
-        Intent intent = new Intent(getApplicationContext(), PersonActivity.class);
+        } else if (id == R.id.nav_setting){
+        Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
         startActivity(intent);
+        } else if (id == R.id.nav_contact){
+            Intent intent = new Intent(getApplicationContext(), ContactActivity.class);
+            startActivity(intent);
     }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;

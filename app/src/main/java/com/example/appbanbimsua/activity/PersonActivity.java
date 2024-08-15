@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -38,11 +39,13 @@ public class PersonActivity extends AppCompatActivity {
     private TextView tvPhone;
     private TextView tvEmail;
     private TextView tvAddress;
-    private UserResponse userInfo = Utils.getUserInfo(this);
+    private ImageView img_back;
+    private UserResponse userInfo = new  UserResponse();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person);
+        userInfo = Utils.getUserInfo(this);
         initUI();
         initData();
         initListen();
@@ -54,6 +57,7 @@ public class PersonActivity extends AppCompatActivity {
         tvPhone = findViewById(R.id.tvPhone);
         tvEmail = findViewById(R.id.tvEmail);
         tvAddress = findViewById(R.id.tvAddress);
+        img_back = findViewById(R.id.img_back);
     }
 
     private void initData() {
@@ -70,6 +74,7 @@ public class PersonActivity extends AppCompatActivity {
                 showEditDialog();
             }
         });
+        img_back.setOnClickListener(v -> onBackPressed());
     }
 
     private void showEditDialog() {
