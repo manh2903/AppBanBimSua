@@ -109,7 +109,8 @@
             android:id="@+id/tv_forgot_pass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Quên mật khẩu ?" />
+            android:text="Quên mật khẩu ?"
+            android:visibility="gone"/>
     </LinearLayout>
 
 </LinearLayout>

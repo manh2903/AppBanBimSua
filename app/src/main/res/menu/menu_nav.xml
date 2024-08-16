@@ -10,6 +10,10 @@
             android:icon="@drawable/ic_order"
             android:title="@string/order" />
         <item
+            android:id="@+id/nav_post"
+            android:icon="@drawable/ic_post"
+            android:title="@string/post" />
+        <item
             android:id="@+id/nav_contact"
             android:icon="@drawable/ic_contact"
             android:title="@string/contact" />

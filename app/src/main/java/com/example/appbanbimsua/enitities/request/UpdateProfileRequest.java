@@ -2,7 +2,7 @@ package com.example.appbanbimsua.enitities.request;
 
 public class UpdateProfileRequest {
     private String phone;
-    private String fullName;
+    private String full_name;
     private String address;
 
     public String getPhone() {
@@ -14,11 +14,11 @@ public class UpdateProfileRequest {
     }
 
     public String getFullName() {
-        return fullName;
+        return full_name;
     }
 
     public void setFullName(String fullName) {
-        this.fullName = fullName;
+        this.full_name = fullName;
     }
 
     public String getAddress() {

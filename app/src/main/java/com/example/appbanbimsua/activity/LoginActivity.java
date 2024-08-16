@@ -50,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         btnSignIn = findViewById(R.id.btn_sign_in);
         progressDialog = new ProgressDialog(this);
         tv_forgot_pw = findViewById(R.id.tv_forgot_pass);
+        tv_forgot_pw.setVisibility(View.GONE);
     }
     private void initListener() {
         layoutSignUp.setOnClickListener(new View.OnClickListener() {

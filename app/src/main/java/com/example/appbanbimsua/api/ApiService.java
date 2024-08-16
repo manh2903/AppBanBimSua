@@ -5,6 +5,7 @@ import com.example.appbanbimsua.enitities.request.LoginRequest;
 import com.example.appbanbimsua.enitities.request.OrderRequest;
 import com.example.appbanbimsua.enitities.request.SignUpRequest;
 import com.example.appbanbimsua.enitities.request.UpdateProfileRequest;
+import com.example.appbanbimsua.enitities.response.Article;
 import com.example.appbanbimsua.enitities.response.CartResponse;
 import com.example.appbanbimsua.enitities.response.OrderDetailResponse;
 import com.example.appbanbimsua.enitities.response.OrderList;
@@ -16,6 +17,7 @@ import com.example.appbanbimsua.enitities.response.UserResponse;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -73,6 +75,11 @@ public interface ApiService {
     Call<List<OrderDetailResponse>> getOrderDetail(
             @Query("billCode") String billCode
     );
+    @POST("/api/update/status")
+    Call<ResponseBody> updateStatus(
+            @Query("billCode") String billCode,
+            @Query("status") int status
+    );
     @PUT("/api/update-profile/{userId}")
     Call<ResponseOK> updateProfile(
             @Path("userId") Long userId,
@@ -83,4 +90,7 @@ public interface ApiService {
             @Path("userId") Long userId,
             @Body ChangePasswordRequest passwordReq
     );
+    @GET("/posts")
+    Call<List<Article>> getPosts();
+
 }

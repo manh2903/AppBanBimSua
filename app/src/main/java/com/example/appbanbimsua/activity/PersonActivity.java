@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
@@ -144,6 +145,8 @@ public class PersonActivity extends AppCompatActivity {
                     tvName.setText(userResponse.getFullName());
                     tvPhone.setText(userResponse.getPhone());
                     tvAddress.setText(userResponse.getAddress());
+
+                    Toast.makeText(PersonActivity.this, "Cập nhật thông tin thành công", Toast.LENGTH_SHORT).show();
                 } else {
 
                 }

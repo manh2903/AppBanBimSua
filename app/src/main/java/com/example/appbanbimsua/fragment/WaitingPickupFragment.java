@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,7 +32,7 @@ public class WaitingPickupFragment extends Fragment {
     private RecyclerView recyclerView;
     private ListOrderAdapter orderAdapter;
     private View view;
-    private TextView tv_empty_cart;
+    private LinearLayout tv_empty_cart;
 
     @Nullable
     @Override
@@ -55,23 +56,34 @@ public class WaitingPickupFragment extends Fragment {
             @Override
             public void onSuccess(List<OrderList> orders) {
                 progressDialog.dismiss();
-                if (orders != null) {
-                    orderAdapter = new ListOrderAdapter(getContext(),orders,WaitingPickupFragment.this);
+                if (orders != null && !orders.isEmpty()) {
+                    tv_empty_cart.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+
+                    orderAdapter = new ListOrderAdapter(getContext(), orders, WaitingPickupFragment.this);
                     recyclerView.setAdapter(orderAdapter);
+                } else {
+                    tv_empty_cart.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
                 }
             }
-
             @Override
             public void onError(Throwable throwable) {
                 progressDialog.dismiss();
-                // Xử lý lỗi
             }
         });
     }
+
 
     private void showProgress() {
         progressDialog.setMessage("Loading...");
         progressDialog.setCancelable(false);
         progressDialog.show();
+    }
+
+    @Override
+    public void onResume() {
+        fetchOrders();
+        super.onResume();
     }
 }

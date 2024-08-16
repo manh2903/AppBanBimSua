@@ -42,7 +42,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private ViewFlipper viewFlipper;
     private NavigationView navigationView;
     private DrawerLayout mDrawerLayout;
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initListen();
     }
 
-    private void initUI(){
+    private void initUI() {
         toolbar = findViewById(R.id.toolbar);
         viewFlipper = findViewById(R.id.viewlipper);
         navigationView = findViewById(R.id.navigation_view);
@@ -81,7 +81,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         framegiohang = findViewById(R.id.framegiohang);
         progressDialog = new ProgressDialog(this);
     }
-    private void initListen(){
+
+    private void initListen() {
         imgsearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mangquangcao.add(R.drawable.img_slide_2);
         mangquangcao.add(R.drawable.img_slide_3);
 
-        for (int i = 0; i < mangquangcao.size(); i++){
+        for (int i = 0; i < mangquangcao.size(); i++) {
             ImageView imageView = new ImageView(getApplicationContext());
             imageView.setImageResource(mangquangcao.get(i));
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -122,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -132,14 +132,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             finish();
         } else if (id == R.id.nav_logo_out) {
             handleLogout();
-        } else if (id == R.id.nav_order){
+        } else if (id == R.id.nav_order) {
             Intent intent = new Intent(getApplicationContext(), ListOrderActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_setting){
-        Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
-        startActivity(intent);
-        } else if (id == R.id.nav_contact){
+        } else if (id == R.id.nav_setting) {
+            Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_contact) {
             Intent intent = new Intent(getApplicationContext(), ContactActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_post) {
+            Intent intent = new Intent(getApplicationContext(), PostActitivy.class);
             startActivity(intent);
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -150,8 +153,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer((GravityCompat.START));
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
     }
@@ -182,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         editor.putBoolean("isLoggedIn", isLoggedIn);
         editor.apply();
     }
+
     private void getProduct() {
         ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
         Call<ProductResponse> call = apiService.getProducts();
@@ -198,6 +201,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Log.e("API_ERROR", "Response Error: " + response.errorBody());
                 }
             }
+
             @Override
             public void onFailure(Call<ProductResponse> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
@@ -205,6 +209,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
+
     private void displayProducts(List<Product> productList) {
         sanPhamHomeAdapter = new SanPhamHomeAdapter(this, productList);
         rcv_list_item.setAdapter(sanPhamHomeAdapter);

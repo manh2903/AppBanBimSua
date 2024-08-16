@@ -1,5 +1,6 @@
 package com.example.appbanbimsua.activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -7,8 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -27,12 +30,14 @@ import com.example.appbanbimsua.enitities.response.CartResponse;
 import com.example.appbanbimsua.enitities.response.OrderDetailResponse;
 import com.example.appbanbimsua.utils.Utils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -64,7 +69,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         if (key == 3 || key == 4 || key == 5) {
             add_to_cart_button.setVisibility(View.GONE);
         }
-        tv_note.setEnabled(key == 1);
+        tv_note.setEnabled(false);
         initStatus();
         initListen();
     }
@@ -96,6 +101,12 @@ public class OrderDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+        add_to_cart_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateStatus(billCode,5);
             }
         });
     }
@@ -174,5 +185,46 @@ public class OrderDetailActivity extends AppCompatActivity {
             }
         });
     }
+    private void updateStatus(String billCode, int status) {
+        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+        Call<ResponseBody> call = apiService.updateStatus(billCode, status);
 
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    if (response.isSuccessful() && response.body() != null) {
+                        String responseBody = response.body().string();
+                        Log.d("API_RESPONSE", responseBody);
+                        showDialog("Thông báo", "Hủy đơn hàng thành công");
+                    } else {
+                        showDialog("Thông báo", "Thất bại");
+                    }
+                } catch (IOException e) {
+                    showDialog("Thông báo", "Lỗi: " + e.getMessage());
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d("API_RESPONSE", t.getMessage());
+                showDialog("Thông báo", "Lỗi: " + t.getMessage());
+            }
+
+        });
+    }
+
+    private void showDialog(String title, String message) {
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .show();
+    }
 }
