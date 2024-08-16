@@ -22,6 +22,7 @@ import com.example.appbanbimsua.api.ApiService;
 import com.example.appbanbimsua.api.RetrofitClient;
 import com.example.appbanbimsua.enitities.ProductCart;
 import com.example.appbanbimsua.enitities.response.CartResponse;
+import com.example.appbanbimsua.enitities.response.Product_quantity;
 import com.example.appbanbimsua.enitities.response.ResponseOK;
 import com.example.appbanbimsua.utils.Utils;
 
@@ -73,9 +74,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
         // Sự kiện tăng số lượng
         holder.btnIncreaseQuantity.setOnClickListener(v -> {
-            addOrUpdateCartItem((long) Utils.getUserInfo(context).getId(),product.getId());
-            Intent intent = new Intent("UPDATE_CART");
-            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+//            addOrUpdateCartItem((long) Utils.getUserInfo(context).getId(),product.getId());
+//            Intent intent = new Intent("UPDATE_CART");
+//            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+            checkAndIncreaseCartItem((long) Utils.getUserInfo(context).getId(), product.getId(), product.getQuantity());
         });
 
         // Sự kiện giảm số lượng
@@ -160,6 +162,39 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             }
         });
     }
+    private void checkAndIncreaseCartItem(Long userId, String productId, int currentQuantity) {
+        ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+        Call<List<Product_quantity>> call = apiService.getProductSizes(productId);
+        call.enqueue(new Callback<List<Product_quantity>>() {
+            @Override
+            public void onResponse(Call<List<Product_quantity>> call, Response<List<Product_quantity>> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
+                    int availableQuantity = response.body().get(0).getQuantity(); // Lấy số lượng có sẵn
+
+                    if (currentQuantity < availableQuantity) {
+                        addOrUpdateCartItem(userId, productId);
+                        Intent intent = new Intent("UPDATE_CART");
+                        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                    } else {
+                        // Thông báo không cho thêm nữa nếu số lượng vượt quá
+                        Toast.makeText(context, "Không thể thêm nữa. Số lượng sản phẩm có sẵn là " + availableQuantity, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Product_quantity>> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(context, "Không thể kiểm tra số lượng sản phẩm", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     public void removeItem(int position) {
         if (position >= 0 && position < productList.size()) {
             productList.remove(position);

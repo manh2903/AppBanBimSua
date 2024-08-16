@@ -134,18 +134,34 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private void setUpListeners() {
         addToCartButton.setOnClickListener(v -> {
-            if (Utils.isLoggedIn(this)) {
-                userResponse = Utils.getUserInfo(this);
-                assert userResponse != null;
-                addOrUpdateCartItem((long) userResponse.getId(), productId);
+            if (productQuantityTextView.getText().equals("0")) {
+                Toast.makeText(this, "Sản phẩm đã hết không thể thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Vui lòng đăng nhập để thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this, LoginActivity.class));
+                if (Utils.isLoggedIn(this)) {
+                    userResponse = Utils.getUserInfo(this);
+                    assert userResponse != null;
+                    addOrUpdateCartItem((long) userResponse.getId(), productId);
+                } else {
+                    Toast.makeText(this, "Vui lòng đăng nhập để thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(this, LoginActivity.class));
+                }
             }
         });
         buyNowButton.setOnClickListener(v -> {
-            // Logic mua ngay
-            Toast.makeText(this, "Mua ngay", Toast.LENGTH_SHORT).show();
+            if (productQuantityTextView.getText().equals("0")) {
+                Toast.makeText(this, "Sản phẩm đã hết không thể thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+            } else {
+                if (Utils.isLoggedIn(this)) {
+                    userResponse = Utils.getUserInfo(this);
+                    assert userResponse != null;
+                    addOrUpdateCartItem((long) userResponse.getId(), productId);
+                    Intent intent = new Intent(ProductDetailActivity.this, OrderActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(this, "Vui lòng đăng nhập để mua", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(this, LoginActivity.class));
+                }
+            }
         });
         btnSubmitComment.setOnClickListener(v -> {
             String commentContent = etUserComment.getText().toString().trim();

@@ -11,6 +11,7 @@ import com.example.appbanbimsua.enitities.response.OrderDetailResponse;
 import com.example.appbanbimsua.enitities.response.OrderList;
 import com.example.appbanbimsua.enitities.response.ProductDetailResponse;
 import com.example.appbanbimsua.enitities.response.ProductResponse;
+import com.example.appbanbimsua.enitities.response.Product_quantity;
 import com.example.appbanbimsua.enitities.response.ResponseOK;
 import com.example.appbanbimsua.enitities.response.SignUpResponse;
 import com.example.appbanbimsua.enitities.response.UserResponse;
@@ -92,5 +93,6 @@ public interface ApiService {
     );
     @GET("/posts")
     Call<List<Article>> getPosts();
-
+    @GET("/api/product-size")
+    Call<List<Product_quantity>> getProductSizes(@Query("productId") String productId);
 }
